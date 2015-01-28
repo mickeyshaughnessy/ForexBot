@@ -16,10 +16,36 @@ def convert_date(date):
     date = [int(x) for x in date]
     return dt.date(date[0], date[1], date[2])
 
+def make_test(START, END, EX_file):
+    train = open('train.csv', 'w')
+    test = open('test.csv', 'w')
+
+    with open(EX_file, 'r') as infile:
+        for line in infile.readlines():
+            if IS_RANDOM:
+                if random() < TEST_FRACT:
+                    test.write(line)
+                else:
+                    train.write(line)
+
+            else:
+                (date, rate) = line.strip().split(',')
+                date = date.split('-')
+                date = [int(x) for x in date]
+                date = dt.date(date[0], date[1], date[2])
+                if date < START or date >= END:
+                    train.write(line)
+                else:
+                    test.write(line)
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 4:
         raise Exception('Exactly 3 arguements required.')
     (START, END) = (convert_date(x) for x in [sys.argv[2], sys.argv[3]])
+   
+    make_test(START, END, sys.argv[1])
+
     train = open('train.csv', 'w')
     test = open('test.csv', 'w')
     
