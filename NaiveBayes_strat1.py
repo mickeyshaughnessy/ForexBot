@@ -77,8 +77,6 @@ def run_simulation():
                 n_rise = results.get((1,)+tuple(current[1:]))
                 n_drop = results.get((-1,)+tuple(current[1:]))
                 current.pop()    
-
-#print tuple(current)    
                 current.pop()
  #   compute_probs(results)
 
